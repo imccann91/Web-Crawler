@@ -23,6 +23,10 @@ public class Main {
 		WebCrawler crawler = new WebCrawler();
 		crawler.CrawlTheWeb(extractor.getAddresses());
 		crawler.getSuccesses();
+		crawler.getSkipped();
+		crawler.getErrors();
+		
+		
 	}
 
 }

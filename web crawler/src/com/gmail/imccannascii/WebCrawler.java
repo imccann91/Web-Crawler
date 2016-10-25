@@ -5,88 +5,82 @@ import java.util.List;
 
 public class WebCrawler {
 
-	private Address address;
 	private ArrayList<String> successes = new ArrayList<String>();
 	private ArrayList<String> skipped = new ArrayList<String>();
 	private ArrayList<String> errors = new ArrayList<String>();
-
+	private ArrayList <String> addressContainer = new ArrayList <String> ();
+	
 	public void CrawlTheWeb(List<Address> addresses) {
 
-		String currentAddress = "";
 		String linkToNextPage = "";
-		String nextPageAddress = "";
-		ArrayList<String> link;
 		int i = 0;
 		int k = 0;
 		boolean firstCycle = true;
 		boolean done = false;
-
+		
+		obtainAddresses(addresses);
+		
 		while (true) {
 
-			currentAddress = addresses.get(i).getAddress();
-
+			k = 0;
 			if (firstCycle == true) {
-				successes.add(currentAddress); // first address is always
-												// successful.
+				successes.add(addresses.get(0).getAddress()); // first address
+																// is always
+				// successful.
 				firstCycle = false;
 			}
 
 			if (addresses.get(i).getLinks().isEmpty() == false && addresses.get(i).getLinks().get(k) != null) {
 
-				linkToNextPage = addresses.get(i).getLinks().get(k);
+				for (k = 0; k < addresses.get(i).getLinks().size(); k++) {
 
-				if (checkForSuccess(linkToNextPage)) { // Check if the link is
-														// already in the
-														// success array list.
-					if (checkForSkipped(linkToNextPage)) {
-						k++;
-					} else {
-						skipped.add(linkToNextPage);
-						k++;
-					}
-				} else {
-					for (int j = i + 1; j < addresses.size();) {
+					linkToNextPage = addresses.get(i).getLinks().get(k);
 
-						if (linkToNextPage.equals(addresses.get(j).getAddress())) {
-							successes.add(addresses.get(j).getAddress());
-							i = j;
-							k = 0;
-							if (i == (addresses.size() - 1)) {
-								done = true;
-								break;
+					for (int j = 0; j < addresses.size(); j++) {
+						if (addressContainer.contains(linkToNextPage)) {
+							if (checkForSuccess(linkToNextPage)) {
+								if (checkForSkipped(linkToNextPage)) {
+
+								} else {
+									skipped.add(linkToNextPage);
+								}
 							} else {
-								break;
+								successes.add(linkToNextPage);
+
 							}
 						} else {
-							if (!checkForError(linkToNextPage)) {
-								errors.add(linkToNextPage);
-							}
-							if (j >= addresses.get(i).getLinks().size()) {
-								i++;
-								k = 0;
-								break;
+							if (checkForError(linkToNextPage)) {
+
 							} else {
-								j++;
-								linkToNextPage = addresses.get(i).getLinks().get(j); // Breaks
-																						// here.
+								errors.add(linkToNextPage);
 							}
 						}
 					}
 				}
-				if(i >= addresses.size() -1){
-					successes.add(addresses.get(i).getAddress());
+				if (i >= addresses.size() - 1) {
 					done = true;
+				} else {
+					i++;
 				}
-			}else{
-				i++;
-			}
-
-			if (done == true) {
-				break;
+				if (done == true) {
+					break;
+				}
+			} else {
+				if (i >= addresses.size() - 1) {
+					done = true;
+				} else {
+					i++;
+				}
 			}
 		}
 	}
 
+	private void obtainAddresses(List <Address> inputAddresses){
+		for(int m = 0; m < inputAddresses.size(); m++){
+			addressContainer.add(inputAddresses.get(m).getAddress());
+		}
+	}
+	
 	private boolean checkForSuccess(String link) {
 		for (int i = 0; i < successes.size(); i++) {
 			if (link.equals(successes.get(i))) {
@@ -114,21 +108,38 @@ public class WebCrawler {
 		return false;
 	}
 
-	// TODO
 	public void getSuccesses() {
 		System.out.println("Successes:");
-		for (int i = 0; i < successes.size(); i++) {
-			System.out.println(successes.get(i));
+		if (successes.isEmpty()) {
+			System.out.println("[]");
+		} else {
+			for (int i = 0; i < successes.size(); i++) {
+				System.out.println(successes.get(i));
+			}
 		}
 	}
 
-	// TODO
-	public ArrayList<String> getSkipped() {
-		return null;
+	
+	public void getSkipped() {
+		System.out.println("Skipped:");
+		if (skipped.isEmpty()) {
+			System.out.println("[]");
+		} else {
+			for (int i = 0; i < skipped.size(); i++) {
+				System.out.println(skipped.get(i));
+			}
+		}
 	}
 
-	// TODO
-	public ArrayList<String> getErrors() {
-		return null;
+	
+	public void getErrors() {
+		System.out.println("Errors:");
+		if (errors.isEmpty()) {
+			System.out.println("[]");
+		} else {
+			for (int i = 0; i < errors.size(); i++) {
+				System.out.println(errors.get(i));
+			}
+		}
 	}
 }
