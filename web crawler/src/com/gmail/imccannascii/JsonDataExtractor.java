@@ -3,10 +3,7 @@ package com.gmail.imccannascii;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.*;
 import com.google.gson.Gson;
-import com.google.gson.JsonStreamParser;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
@@ -14,7 +11,7 @@ public class JsonDataExtractor {
 
 	private FileInputStream inputFile;
 	private JsonReader reader;
-	private List<Address> addresses;
+	private ArrayList<Address> addresses;
 	private Gson gson = new Gson();
 
 	public JsonDataExtractor(String fileName) throws IOException {
