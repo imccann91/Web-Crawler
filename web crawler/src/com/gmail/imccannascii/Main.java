@@ -10,15 +10,7 @@ public class Main {
 		JsonDataExtractor extractor = new JsonDataExtractor(
 				"C:\\Users\\Ian\\Desktop\\Eclipse Projects\\web crawler\\src\\com\\gmail\\imccannascii\\Internet 1.json");
 		extractor.readData();
-/*
-		for (int i = 0; i < extractor.getAddresses().size(); i++) {
-			System.out.println(extractor.getAddresses().get(i).getAddress());
-		}
-		
-		System.out.println();
-		
-		extractor.getLinks();
-		*/
+		extractor.closeFiles();
 		
 		WebCrawler crawler = new WebCrawler();
 		crawler.CrawlTheWeb(extractor.getAddresses());
@@ -26,7 +18,17 @@ public class Main {
 		crawler.getSkipped();
 		crawler.getErrors();
 		
+		System.out.println();
 		
+		extractor.newFileToProcess("C:\\Users\\Ian\\git\\Web-Crawler\\web crawler\\src\\com\\gmail\\imccannascii\\Internet 2.json");
+		extractor.readData();
+		extractor.closeFiles();
+		
+		crawler = new WebCrawler();
+		crawler.CrawlTheWeb(extractor.getAddresses());
+		crawler.getSuccesses();
+		crawler.getSkipped();
+		crawler.getErrors();
 	}
 
 }

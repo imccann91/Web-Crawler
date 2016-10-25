@@ -19,6 +19,11 @@ public class JsonDataExtractor {
 		inputFile = new FileInputStream(fileName);
 
 	}
+	
+	public void newFileToProcess(String filename) throws IOException{
+		inputFile.close();
+		inputFile = new FileInputStream(filename);
+	}
 
 	public void readData() {
 		String temp = "";
